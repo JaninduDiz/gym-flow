@@ -118,7 +118,7 @@ export default function PaymentsPage() {
                 {payments.map(payment => (
                     <Card key={payment.id}>
                         <CardContent className="pt-6">
-                           <div className="flex items-start justify-between">
+                           <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <Avatar>
                                         <AvatarImage src={payment.memberAvatarUrl} alt={payment.memberName} data-ai-hint="member avatar" />
@@ -130,7 +130,7 @@ export default function PaymentsPage() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-end gap-2">
-                                     <div className="font-bold">${payment.amount.toFixed(2)}</div>
+                                     <div className="font-medium">${payment.amount.toFixed(2)}</div>
                                     <Badge
                                         className={cn(
                                             "capitalize",
