@@ -1,3 +1,4 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,7 @@ export default function PaymentsPage() {
                       </SelectContent>
                     </Select>
                 </div>
-                 <Button>
+                 <Button className="hidden md:flex">
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Record Payment
                 </Button>
@@ -114,9 +115,9 @@ export default function PaymentsPage() {
             </Card>
 
             {/* Mobile View */}
-            <div className="grid gap-4 md:hidden">
+            <div className="grid gap-4 md:hidden pb-20">
                 {payments.map(payment => (
-                    <Card key={payment.id}>
+                     <Card key={payment.id}>
                         <CardContent className="pt-6">
                            <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
@@ -144,6 +145,14 @@ export default function PaymentsPage() {
                         </CardContent>
                     </Card>
                 ))}
+            </div>
+            
+            {/* Mobile FAB */}
+            <div className="md:hidden fixed bottom-4 right-4 z-50">
+                <Button size="lg" className="rounded-full shadow-lg w-auto px-4 py-6">
+                    <PlusCircle className="mr-2 h-6 w-6" />
+                    Record Payment
+                </Button>
             </div>
         </div>
     )
