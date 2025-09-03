@@ -63,6 +63,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
+                  size="lg"
                   isActive={pathname === item.href}
                   tooltip={item.label}
                   onClick={handleLinkClick}
@@ -77,7 +78,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <Avatar className="h-10 w-10">
               <AvatarImage src="https://picsum.photos/100/100?random=10" alt="@manager" data-ai-hint="manager avatar" />
               <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
