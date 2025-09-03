@@ -1,7 +1,8 @@
+
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { CreditCard, LayoutGrid, Users } from 'lucide-react';
 import {
   SidebarProvider,
@@ -26,6 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ProtectedRoute, useAuth } from '@/hooks/use-auth';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
@@ -33,8 +35,15 @@ const navItems = [
   { href: '/payments', label: 'Payments', icon: CreditCard },
 ];
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+function AppLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { logOut, user } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logOut();
+    router.push('/login');
+  };
 
   return (
     <SidebarProvider>
@@ -64,11 +73,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2 p-2">
             <Avatar className="h-9 w-9">
               <AvatarImage src="https://picsum.photos/100/100?random=10" alt="@manager" data-ai-hint="manager avatar" />
-              <AvatarFallback>M</AvatarFallback>
+              <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col text-sm">
-                <span className="font-semibold">Alex Manager</span>
-                <span className="text-muted-foreground">alex@gymflow.com</span>
+            <div className="flex flex-col text-sm truncate">
+                <span className="font-semibold truncate">{user?.displayName || 'User'}</span>
+                <span className="text-muted-foreground truncate">{user?.email}</span>
             </div>
           </div>
         </SidebarFooter>
@@ -86,7 +95,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Avatar>
                   <AvatarImage src="https://picsum.photos/100/100?random=10" alt="@manager" data-ai-hint="manager avatar" />
-                  <AvatarFallback>M</AvatarFallback>
+                  <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -96,8 +105,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/login">Logout</Link>
+              <DropdownMenuItem onClick={handleLogout}>
+                Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -106,4 +115,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </SidebarInset>
     </SidebarProvider>
   );
+}
+
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <ProtectedRoute>
+      <AppLayoutContent>{children}</AppLayoutContent>
+    </ProtectedRoute>
+  )
 }
