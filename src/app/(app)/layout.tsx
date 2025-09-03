@@ -30,6 +30,7 @@ import {
   DropdownMenuGroup,
 } from '@/components/ui/dropdown-menu';
 import { ProtectedRoute, useAuth } from '@/hooks/use-auth';
+import { Separator } from '@/components/ui/separator';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
@@ -79,39 +80,41 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <div className="flex items-center gap-4 cursor-pointer hover:bg-sidebar-accent p-2 rounded-md">
-                    <Avatar className="h-10 w-10">
-                    <AvatarImage src="https://picsum.photos/100/100?random=10" alt="@manager" data-ai-hint="manager avatar" />
-                    <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col text-sm truncate">
-                        <span className="font-semibold truncate">{user?.displayName || 'User'}</span>
-                        <span className="text-muted-foreground truncate">{user?.email}</span>
-                    </div>
-                </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="top" align="start" className="w-[var(--sidebar-width)] mb-2 ml-2">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <Settings className="mr-2 h-4 w-4" />
-                        <span>Settings</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <LifeBuoy className="mr-2 h-4 w-4" />
-                        <span>Support</span>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Logout</span>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <SidebarMenu className="mb-4">
+              <SidebarMenuItem>
+                  <SidebarMenuButton asChild size="lg" tooltip="Settings" onClick={handleLinkClick}>
+                      <Link href="#">
+                          <Settings />
+                          <span>Settings</span>
+                      </Link>
+                  </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                  <SidebarMenuButton asChild size="lg" tooltip="Support" onClick={handleLinkClick}>
+                      <Link href="#">
+                          <LifeBuoy />
+                          <span>Support</span>
+                      </Link>
+                  </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                  <SidebarMenuButton size="lg" tooltip="Logout" onClick={handleLogout}>
+                      <LogOut />
+                      <span>Logout</span>
+                  </SidebarMenuButton>
+              </SidebarMenuItem>
+          </SidebarMenu>
+          <Separator className="my-2 bg-sidebar-border" />
+          <div className="flex items-center gap-4 cursor-pointer p-2 rounded-md">
+              <Avatar className="h-10 w-10">
+              <AvatarImage src="https://picsum.photos/100/100?random=10" alt="@manager" data-ai-hint="manager avatar" />
+              <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col text-sm truncate">
+                  <span className="font-semibold truncate">{user?.displayName || 'User'}</span>
+                  <span className="text-muted-foreground truncate">{user?.email}</span>
+              </div>
+          </div>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
