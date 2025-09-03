@@ -28,7 +28,7 @@ export default function PaymentsPage() {
                 <div className="flex items-center gap-2 ml-auto">
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant={"outline"} className="w-[240px] justify-start text-left font-normal">
+                        <Button variant={"outline"} className="w-full sm:w-[240px] justify-start text-left font-normal">
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           Filter by date...
                         </Button>
@@ -38,7 +38,7 @@ export default function PaymentsPage() {
                       </PopoverContent>
                     </Popover>
                     <Select>
-                      <SelectTrigger className="w-[180px]">
+                      <SelectTrigger className="w-full sm:w-[180px]">
                         <SelectValue placeholder="Filter by status" />
                       </SelectTrigger>
                       <SelectContent>
@@ -54,7 +54,9 @@ export default function PaymentsPage() {
                     Record Payment
                 </Button>
             </div>
-            <Card>
+            
+            {/* Desktop View */}
+            <Card className="hidden md:block">
                 <CardContent className="pt-6">
                     <Table>
                         <TableHeader>
@@ -110,6 +112,39 @@ export default function PaymentsPage() {
                     </Table>
                 </CardContent>
             </Card>
+
+            {/* Mobile View */}
+            <div className="grid gap-4 md:hidden">
+                {payments.map(payment => (
+                    <Card key={payment.id}>
+                        <CardContent className="pt-6">
+                           <div className="flex items-start justify-between">
+                                <div className="flex items-center gap-3">
+                                    <Avatar>
+                                        <AvatarImage src={payment.memberAvatarUrl} alt={payment.memberName} data-ai-hint="member avatar" />
+                                        <AvatarFallback>{payment.memberName[0]}</AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <div className="font-medium">{payment.memberName}</div>
+                                        <div className="text-sm text-muted-foreground">{new Date(payment.date).toLocaleDateString()}</div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col items-end gap-2">
+                                     <div className="font-bold">${payment.amount.toFixed(2)}</div>
+                                    <Badge
+                                        className={cn(
+                                            "capitalize",
+                                            payment.status === 'paid' && 'bg-green-600/20 text-green-400 border-green-600/30',
+                                            payment.status === 'overdue' && 'bg-red-600/20 text-red-400 border-red-600/30',
+                                            payment.status === 'due' && 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30'
+                                        )}
+                                    >{payment.status}</Badge>
+                               </div>
+                           </div>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
         </div>
     )
 }
