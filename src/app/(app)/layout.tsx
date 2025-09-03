@@ -15,6 +15,7 @@ import {
   SidebarInset,
   SidebarTrigger,
   SidebarFooter,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
@@ -39,14 +40,19 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { logOut, user } = useAuth();
   const router = useRouter();
+  const { setOpenMobile } = useSidebar();
 
   const handleLogout = async () => {
     await logOut();
     router.push('/login');
   };
 
+  const handleLinkClick = () => {
+    setOpenMobile(false);
+  }
+
   return (
-    <SidebarProvider>
+    <>
       <Sidebar>
         <SidebarHeader>
           <Logo />
@@ -59,6 +65,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
                   asChild
                   isActive={pathname === item.href}
                   tooltip={item.label}
+                  onClick={handleLinkClick}
                 >
                   <Link href={item.href}>
                     <item.icon />
@@ -113,7 +120,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
         </header>
         <main className="flex-1 p-4 md:p-6">{children}</main>
       </SidebarInset>
-    </SidebarProvider>
+    </>
   );
 }
 
@@ -121,7 +128,9 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <ProtectedRoute>
-      <AppLayoutContent>{children}</AppLayoutContent>
+      <SidebarProvider>
+        <AppLayoutContent>{children}</AppLayoutContent>
+      </SidebarProvider>
     </ProtectedRoute>
   )
 }
