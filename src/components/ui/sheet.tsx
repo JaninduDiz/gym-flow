@@ -126,6 +126,22 @@ const SheetDescription = React.forwardRef<
 ))
 SheetDescription.displayName = SheetPrimitive.Description.displayName
 
+const VisuallyHidden = React.forwardRef<
+  React.ElementRef<'span'>,
+  React.ComponentPropsWithoutRef<'span'>
+>(({ className, ...props }, ref) => (
+  <span
+    ref={ref}
+    className={cn(
+      'absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]',
+      className
+    )}
+    {...props}
+  />
+));
+VisuallyHidden.displayName = 'VisuallyHidden';
+
+
 export {
   Sheet,
   SheetPortal,
@@ -137,4 +153,5 @@ export {
   SheetFooter,
   SheetTitle,
   SheetDescription,
+  VisuallyHidden
 }
