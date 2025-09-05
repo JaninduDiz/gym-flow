@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { members, payments } from "@/lib/data";
 import { cn } from "@/lib/utils";
-import { differenceInDays, isThisWeek, isToday, parseISO } from "date-fns";
+import { differenceInDays, isThisWeek, isToday, parseISO, formatDistanceToNow } from "date-fns";
 import { ArrowUpRight, BarChart, Calendar, Users, Wallet } from "lucide-react";
 import Link from "next/link";
 
@@ -25,7 +25,19 @@ const StatCard = ({ title, value, icon: Icon, change, description }: { title: st
 );
 
 export default function DashboardPage() {
-    const upcomingPayments = payments.filter(p => p.status === 'due').sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).slice(0, 5);
+    const upcomingPayments = payments.filter(p => {
+        if (p.status !== 'due') return false;
+        const dueDate = parseISO(p.date);
+        const today = new Date();
+        const daysUntilDue = differenceInDays(dueDate, today);
+        return daysUntilDue >= 0 && daysUntilDue <= 7;
+    }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).slice(0, 5);
+
+    const overdueMembers = payments
+        .filter(p => p.status === 'overdue')
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 5);
+
     const upcomingBirthdays = members.filter(m => {
         const birthday = parseISO(m.birthday);
         const today = new Date();
@@ -48,7 +60,7 @@ export default function DashboardPage() {
             <div className="grid gap-6 md:grid-cols-2">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Upcoming Payments</CardTitle>
+                        <CardTitle>Due within 7 days</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Table>
@@ -74,7 +86,36 @@ export default function DashboardPage() {
                     </CardContent>
                 </Card>
 
-                <Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Overdue Members</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Member</TableHead>
+                                    <TableHead>Amount</TableHead>
+                                    <TableHead className="text-right">Overdue Since</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {overdueMembers.map(payment => (
+                                    <TableRow key={payment.id}>
+                                        <TableCell>
+                                            <div className="font-medium">{payment.memberName}</div>
+                                        </TableCell>
+                                        <TableCell className="text-destructive">${payment.amount.toFixed(2)}</TableCell>
+                                        <TableCell className="text-right text-destructive">{formatDistanceToNow(parseISO(payment.date), { addSuffix: true })}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            </div>
+             <div className="grid gap-6 md:grid-cols-2">
+                 <Card>
                     <CardHeader>
                         <CardTitle>Upcoming Birthdays</CardTitle>
                     </CardHeader>
@@ -98,7 +139,7 @@ export default function DashboardPage() {
                         ))}
                     </CardContent>
                 </Card>
-            </div>
+             </div>
         </div>
     )
 }
