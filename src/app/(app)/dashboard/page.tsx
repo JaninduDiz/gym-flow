@@ -6,20 +6,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { members, payments } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { differenceInDays, isThisWeek, isToday, parseISO, formatDistanceToNow } from "date-fns";
-import { Users, Wallet, BarChart, AlertTriangle } from "lucide-react";
+import { Users, Wallet, BarChart, AlertTriangle, Clock } from "lucide-react";
 
-const StatCard = ({ title, value, icon: Icon, change, description, className }: { title: string, value: string, icon: React.ElementType, change?: string, description?: string, className?: string }) => (
+const StatCard = ({ title, value, icon: Icon, className, iconClassName }: { title: string, value: string, icon: React.ElementType, className?: string, iconClassName?: string }) => (
     <Card className={cn(className)}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{title}</CardTitle>
-            <Icon className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-            <div className="text-2xl font-bold">{value}</div>
-            {change && <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <span className="text-primary">{change}</span>
-                {description}
-            </p>}
+        <CardContent className="p-4 flex items-center gap-4">
+            <Icon className={cn("h-8 w-8 text-muted-foreground", iconClassName)} />
+            <div className="flex flex-col">
+                 <p className="text-sm text-muted-foreground">{title}</p>
+                 <p className="text-2xl font-bold">{value}</p>
+            </div>
         </CardContent>
     </Card>
 );
@@ -51,11 +47,11 @@ export default function DashboardPage() {
 
     return (
         <div className="grid gap-6">
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                <StatCard title="Members" value={String(members.length)} icon={Users} change="+2" description="this month" />
-                <StatCard title="Overdues" value={String(overduePaymentsCount)} icon={BarChart} change="+5" description="since last week" />
-                <StatCard title="Due Soon" value={String(dueSoonCount)} icon={AlertTriangle} description="within 7 days" />
-                <StatCard title="30d Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} change="+15.2%" description="from last month" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <StatCard title="Members" value={String(members.length)} icon={Users} />
+                <StatCard title="Overdue" value={String(overduePaymentsCount)} icon={AlertTriangle} className="bg-destructive/10 border-destructive/20" iconClassName="text-destructive" />
+                <StatCard title="Due Soon" value={String(dueSoonCount)} icon={Clock} className="bg-yellow-500/10 border-yellow-500/20" iconClassName="text-yellow-600" />
+                <StatCard title="30d Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
