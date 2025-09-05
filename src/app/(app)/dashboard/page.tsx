@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 import { differenceInDays, isThisWeek, isToday, parseISO, formatDistanceToNow } from "date-fns";
 import { Users, Wallet, BarChart, AlertTriangle } from "lucide-react";
 
-const StatCard = ({ title, value, icon: Icon, change, description }: { title: string, value: string, icon: React.ElementType, change?: string, description?: string }) => (
-    <Card>
+const StatCard = ({ title, value, icon: Icon, change, description, className }: { title: string, value: string, icon: React.ElementType, change?: string, description?: string, className?: string }) => (
+    <Card className={cn(className)}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{title}</CardTitle>
             <Icon className="h-4 w-4 text-muted-foreground" />
@@ -52,10 +52,10 @@ export default function DashboardPage() {
     return (
         <div className="grid gap-6">
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                <StatCard title="Total Members" value={String(members.length)} icon={Users} change="+2" description="this month" />
-                <StatCard title="Overdue Payments" value={String(overduePaymentsCount)} icon={BarChart} change="+5" description="since last week" />
+                <StatCard title="Members" value={String(members.length)} icon={Users} change="+2" description="this month" />
+                <StatCard title="Overdues" value={String(overduePaymentsCount)} icon={BarChart} change="+5" description="since last week" />
                 <StatCard title="Due Soon" value={String(dueSoonCount)} icon={AlertTriangle} description="within 7 days" />
-                <StatCard title="Total Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} change="+15.2%" description="from last month" />
+                <StatCard title="30d Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} change="+15.2%" description="from last month" />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
