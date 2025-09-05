@@ -1,3 +1,4 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,11 +51,10 @@ export default function DashboardPage() {
 
     return (
         <div className="grid gap-6">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <StatCard title="Total Members" value={String(members.length)} icon={Users} change="+2" description="this month" />
                 <StatCard title="Total Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} change="+15.2%" description="from last month" />
                 <StatCard title="Overdue Payments" value={String(overduePaymentsCount)} icon={BarChart} change="+5" description="since last week" />
-                <StatCard title="Upcoming Birthdays" value={String(upcomingBirthdays.length)} icon={Calendar} description="this week" />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
