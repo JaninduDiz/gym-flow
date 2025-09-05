@@ -6,8 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { members, payments } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { differenceInDays, isThisWeek, isToday, parseISO, formatDistanceToNow } from "date-fns";
-import { ArrowUpRight, BarChart, Calendar, Users, Wallet } from "lucide-react";
-import Link from "next/link";
+import { Users, Wallet, BarChart, AlertTriangle } from "lucide-react";
 
 const StatCard = ({ title, value, icon: Icon, change, description }: { title: string, value: string, icon: React.ElementType, change?: string, description?: string }) => (
     <Card>
@@ -48,13 +47,15 @@ export default function DashboardPage() {
 
     const totalRevenue = payments.filter(p => p.status === 'paid').reduce((acc, p) => acc + p.amount, 0);
     const overduePaymentsCount = payments.filter(p => p.status === 'overdue').length;
+    const dueSoonCount = upcomingPayments.length;
 
     return (
         <div className="grid gap-6">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                 <StatCard title="Total Members" value={String(members.length)} icon={Users} change="+2" description="this month" />
-                <StatCard title="Total Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} change="+15.2%" description="from last month" />
                 <StatCard title="Overdue Payments" value={String(overduePaymentsCount)} icon={BarChart} change="+5" description="since last week" />
+                <StatCard title="Due Soon" value={String(dueSoonCount)} icon={AlertTriangle} description="within 7 days" />
+                <StatCard title="Total Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} change="+15.2%" description="from last month" />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
