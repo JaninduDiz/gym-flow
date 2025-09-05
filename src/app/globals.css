@@ -33,13 +33,13 @@ body {
     --chart-4: 235 22% 21%;
     --chart-5: 210 22% 96%;
     --radius: 0.5rem;
-    --sidebar-background: 235 22% 21%; /* #2B2D42 */
-    --sidebar-foreground: 210 22% 96%; /* #EDF2F4 */
-    --sidebar-primary: 353 82% 53%; /* #EF233C */
+    --sidebar-background: 0 0% 100%; /* #FFFFFF */
+    --sidebar-foreground: 235 22% 21%; /* #2B2D42 */
+    --sidebar-primary: 353 82% 53%;
     --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 235 22% 31%;
-    --sidebar-accent-foreground: 210 22% 96%;
-    --sidebar-border: 235 22% 31%;
+    --sidebar-accent: 210 22% 96%; /* #EDF2F4 */
+    --sidebar-accent-foreground: 235 22% 21%;
+    --sidebar-border: 216 13% 90%; /* --accent */
     --sidebar-ring: 353 82% 53%;
   }
 
