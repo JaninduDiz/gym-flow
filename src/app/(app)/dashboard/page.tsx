@@ -63,13 +63,7 @@ export default function DashboardPage() {
                                 {upcomingPayments.map(payment => (
                                     <TableRow key={payment.id}>
                                         <TableCell>
-                                            <div className="flex items-center gap-3">
-                                                <Avatar className="h-8 w-8">
-                                                    <AvatarImage src={payment.memberAvatarUrl} alt={payment.memberName} data-ai-hint="member avatar" />
-                                                    <AvatarFallback>{payment.memberName.charAt(0)}</AvatarFallback>
-                                                </Avatar>
-                                                <span className="font-medium">{payment.memberName}</span>
-                                            </div>
+                                            <div className="font-medium">{payment.memberName}</div>
                                         </TableCell>
                                         <TableCell>${payment.amount.toFixed(2)}</TableCell>
                                         <TableCell className="text-right">{new Date(payment.date).toLocaleDateString()}</TableCell>
