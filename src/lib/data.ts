@@ -1,4 +1,5 @@
-import type { Member, Payment } from './definitions';
+
+import type { Member, Payment, Plan } from './definitions';
 
 export const members: Member[] = [
   {
@@ -114,4 +115,43 @@ export const payments: Payment[] = [
     status: 'overdue',
     memberAvatarUrl: 'https://picsum.photos/100/100?random=4',
   },
+];
+
+export const plans: Plan[] = [
+    {
+        id: 'plan-1',
+        name: 'Basic Fit',
+        description: 'Access to all basic gym equipment and facilities.',
+        price: 29.99,
+        cycle: 'monthly',
+        features: [
+            'Unlimited gym access',
+            'Cardio and weight training zones',
+            'Locker room access'
+        ]
+    },
+    {
+        id: 'plan-2',
+        name: 'Pro Fit',
+        description: 'All the benefits of Basic Fit, plus access to group classes.',
+        price: 49.99,
+        cycle: 'monthly',
+        features: [
+            'All Basic Fit features',
+            'Access to all group classes (Yoga, Zumba, etc.)',
+            'Towel service'
+        ]
+    },
+    {
+        id: 'plan-3',
+        name: 'Yearly Saver',
+        description: 'Commit for a year and save big on your membership.',
+        price: 499.99,
+        cycle: 'yearly',
+        features: [
+            'All Pro Fit features',
+            '2 free personal training sessions',
+            '10% off merchandise'
+        ]
+    }
 ];

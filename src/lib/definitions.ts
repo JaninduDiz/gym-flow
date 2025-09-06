@@ -1,3 +1,4 @@
+
 export type Member = {
   id: string;
   memberNumber: string;
@@ -21,3 +22,12 @@ export type Payment = {
   status: 'paid' | 'due' | 'overdue';
   memberAvatarUrl: string;
 };
+
+export type Plan = {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    cycle: 'monthly' | 'quarterly' | 'yearly';
+    features: string[];
+}
