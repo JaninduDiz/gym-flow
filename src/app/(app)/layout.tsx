@@ -82,7 +82,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <SidebarMenu className="mb-4">
+          <SidebarMenu className="mb-2">
               <SidebarMenuItem>
                   <SidebarMenuButton asChild size="lg" tooltip="Settings" isActive={pathname === '/settings'} onClick={handleLinkClick}>
                       <Link href="/settings">
