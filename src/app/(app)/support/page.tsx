@@ -2,15 +2,10 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Phone, Mail, Code } from "lucide-react";
 
-const SupportContact = ({ name, role, email, phone, avatarUrl }: { name: string, role: string, email: string, phone: string, avatarUrl: string }) => (
-    <div className="flex items-center gap-4">
-        <Avatar className="h-14 w-14">
-            <AvatarImage src={avatarUrl} alt={name} data-ai-hint="support person" />
-            <AvatarFallback>{name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-        </Avatar>
+const SupportContact = ({ name, role, email, phone }: { name: string, role: string, email: string, phone: string }) => (
+    <div className="flex items-start gap-4">
         <div className="grid gap-1">
             <p className="text-lg font-semibold">{name}</p>
             <p className="text-sm text-muted-foreground">{role}</p>
@@ -42,14 +37,12 @@ export default function SupportPage() {
                 role="System Administrator"
                 email="admin@gymflow.com"
                 phone="+1 (555) 123-4567"
-                avatarUrl="https://picsum.photos/100/100?random=21"
             />
             <SupportContact 
                 name="Manager Helpdesk"
                 role="General Manager"
                 email="manager@gymflow.com"
                 phone="+1 (555) 765-4321"
-                avatarUrl="https://picsum.photos/100/100?random=22"
             />
         </CardContent>
       </Card>
@@ -59,9 +52,7 @@ export default function SupportPage() {
         </CardHeader>
         <CardContent>
              <div className="flex items-center gap-4">
-                <Avatar className="h-14 w-14">
-                    <AvatarFallback><Code /></AvatarFallback>
-                </Avatar>
+                <Code className="h-8 w-8 text-muted-foreground" />
                 <div className="grid gap-1">
                     <p className="text-lg font-semibold">Your Developer</p>
                     <p className="text-sm text-muted-foreground">For technical assistance</p>

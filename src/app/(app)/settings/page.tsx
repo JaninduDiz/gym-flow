@@ -1,12 +1,15 @@
 
 "use client"
 
+import { useTheme } from "next-themes";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 
 export default function SettingsPage() {
+    const { theme, setTheme } = useTheme();
+
     return (
         <div className="grid gap-6">
             <Card>
@@ -22,7 +25,11 @@ export default function SettingsPage() {
                                 Select between light and dark mode.
                             </span>
                         </Label>
-                        <Switch id="theme-switcher" disabled />
+                        <Switch 
+                            id="theme-switcher" 
+                            checked={theme === 'dark'}
+                            onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+                        />
                     </div>
                 </CardContent>
             </Card>
