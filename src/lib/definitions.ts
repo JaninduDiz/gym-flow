@@ -31,3 +31,13 @@ export type Plan = {
     cycle: 'monthly' | 'quarterly' | 'yearly';
     features: string[];
 }
+
+export type AppUser = {
+    id: string;
+    name: string;
+    email: string;
+    mobile: string;
+    role: 'admin' | 'manager' | 'staff';
+    avatarUrl: string;
+    status: 'active' | 'inactive';
+}

@@ -1,5 +1,5 @@
 
-import type { Member, Payment, Plan } from './definitions';
+import type { Member, Payment, Plan, AppUser } from './definitions';
 
 export const members: Member[] = [
   {
@@ -155,3 +155,33 @@ export const plans: Plan[] = [
         ]
     }
 ];
+
+export const appUsers: AppUser[] = [
+    {
+        id: 'user-1',
+        name: 'Alex Johnson',
+        email: 'alex.j@gymflow.com',
+        mobile: '123-456-7890',
+        role: 'admin',
+        avatarUrl: 'https://picsum.photos/100/100?random=11',
+        status: 'active',
+    },
+    {
+        id: 'user-2',
+        name: 'Maria Garcia',
+        email: 'maria.g@gymflow.com',
+        mobile: '234-567-8901',
+        role: 'manager',
+        avatarUrl: 'https://picsum.photos/100/100?random=12',
+        status: 'active',
+    },
+    {
+        id: 'user-3',
+        name: 'Sam Wilson',
+        email: 'sam.w@gymflow.com',
+        mobile: '345-678-9012',
+        role: 'staff',
+        avatarUrl: 'https://picsum.photos/100/100?random=13',
+        status: 'inactive',
+    }
+]

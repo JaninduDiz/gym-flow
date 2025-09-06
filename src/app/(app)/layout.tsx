@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { CreditCard, LayoutGrid, Users, Settings, LifeBuoy, LogOut, NotebookPen } from 'lucide-react';
+import { CreditCard, LayoutGrid, Users, Settings, LifeBuoy, LogOut, NotebookPen, UsersRound } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -37,6 +37,7 @@ const navItems = [
   { href: '/members', label: 'Members', icon: Users },
   { href: '/payments', label: 'Payments', icon: CreditCard },
   { href: '/plans', label: 'Plans', icon: NotebookPen },
+  { href: '/users', label: 'Users', icon: UsersRound },
 ];
 
 function AppLayoutContent({ children }: { children: React.ReactNode }) {
