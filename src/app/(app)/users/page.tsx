@@ -84,13 +84,7 @@ export default function UsersPage() {
                             {users.map(user => (
                                 <TableRow key={user.id}>
                                     <TableCell>
-                                        <div className="flex items-center gap-3">
-                                            <Avatar>
-                                                <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="user avatar" />
-                                                <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                            </Avatar>
-                                            <div className="font-medium">{user.name}</div>
-                                        </div>
+                                        <div className="font-medium">{user.name}</div>
                                     </TableCell>
                                     <TableCell className="hidden md:table-cell">
                                         <div>{user.email}</div>
