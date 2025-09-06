@@ -9,7 +9,7 @@ const SupportContact = ({ name, role, email, phone }: { name: string, role: stri
         <div className="grid gap-1">
             <p className="text-lg font-semibold">{name}</p>
             <p className="text-sm text-muted-foreground">{role}</p>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-sm text-muted-foreground mt-1">
                 <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4" />
                     <span>{email}</span>
