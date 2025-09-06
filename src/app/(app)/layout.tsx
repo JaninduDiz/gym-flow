@@ -84,16 +84,16 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
         <SidebarFooter>
           <SidebarMenu className="mb-4">
               <SidebarMenuItem>
-                  <SidebarMenuButton asChild size="lg" tooltip="Settings" onClick={handleLinkClick}>
-                      <Link href="#">
+                  <SidebarMenuButton asChild size="lg" tooltip="Settings" isActive={pathname === '/settings'} onClick={handleLinkClick}>
+                      <Link href="/settings">
                           <Settings />
                           <span>Settings</span>
                       </Link>
                   </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                  <SidebarMenuButton asChild size="lg" tooltip="Support" onClick={handleLinkClick}>
-                      <Link href="#">
+                  <SidebarMenuButton asChild size="lg" tooltip="Support" isActive={pathname === '/support'} onClick={handleLinkClick}>
+                      <Link href="/support">
                           <LifeBuoy />
                           <span>Support</span>
                       </Link>
@@ -124,7 +124,10 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           <SidebarTrigger className="md:hidden" />
           <div className="flex-1">
             <h1 className="text-xl font-semibold font-headline">
-              {navItems.find(item => pathname.startsWith(item.href))?.label}
+              {navItems.find(item => pathname.startsWith(item.href))?.label || 
+               (pathname.startsWith('/settings') && 'Settings') ||
+               (pathname.startsWith('/support') && 'Support')
+              }
             </h1>
           </div>
         </header>
