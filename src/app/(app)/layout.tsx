@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { CreditCard, LayoutGrid, Users, Settings, LifeBuoy, LogOut } from 'lucide-react';
+import { CreditCard, LayoutGrid, Users, Settings, LifeBuoy, LogOut, NotebookPen, UsersRound } from 'lucide-react';
 import {
   SidebarProvider,
   Sidebar,
@@ -20,15 +20,6 @@ import {
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuGroup,
-} from '@/components/ui/dropdown-menu';
 import { ProtectedRoute, useAuth } from '@/hooks/use-auth';
 import { Separator } from '@/components/ui/separator';
 
@@ -36,6 +27,8 @@ const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
   { href: '/members', label: 'Members', icon: Users },
   { href: '/payments', label: 'Payments', icon: CreditCard },
+  { href: '/plans', label: 'Plans', icon: NotebookPen },
+  { href: '/users', label: 'Users', icon: UsersRound },
 ];
 
 function AppLayoutContent({ children }: { children: React.ReactNode }) {
@@ -80,18 +73,18 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <SidebarMenu className="mb-4">
+          <SidebarMenu className="mb-[-2] sm:mb-[-8px]">
               <SidebarMenuItem>
-                  <SidebarMenuButton asChild size="lg" tooltip="Settings" onClick={handleLinkClick}>
-                      <Link href="#">
+                  <SidebarMenuButton asChild size="lg" tooltip="Settings" isActive={pathname === '/settings'} onClick={handleLinkClick}>
+                      <Link href="/settings">
                           <Settings />
                           <span>Settings</span>
                       </Link>
                   </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                  <SidebarMenuButton asChild size="lg" tooltip="Support" onClick={handleLinkClick}>
-                      <Link href="#">
+                  <SidebarMenuButton asChild size="lg" tooltip="Support" isActive={pathname === '/support'} onClick={handleLinkClick}>
+                      <Link href="/support">
                           <LifeBuoy />
                           <span>Support</span>
                       </Link>
@@ -104,8 +97,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
                   </SidebarMenuButton>
               </SidebarMenuItem>
           </SidebarMenu>
-          <Separator className="my-2 bg-sidebar-border" />
-          <div className="flex items-center gap-4 cursor-pointer p-2 rounded-md">
+          <Separator className="bg-sidebar-border" />
+          <div className="flex items-center gap-4 cursor-pointer px-2 rounded-md sm:py-2">
               <Avatar className="h-10 w-10">
               <AvatarImage src="https://picsum.photos/100/100?random=10" alt="@manager" data-ai-hint="manager avatar" />
               <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
@@ -118,11 +111,14 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-14 items-center gap-4 border-b bg-card/80 backdrop-blur-sm px-6 sticky top-0 z-30 md:static md:h-auto md:border-0 md:bg-transparent md:px-0">
+        <header className="flex h-14 items-center gap-4 border-b bg-card/80 backdrop-blur-sm px-6 sticky top-0 z-30 md:static md:h-auto md:border-0 md:bg-transparent md:px-6 md:pt-6">
           <SidebarTrigger className="md:hidden" />
           <div className="flex-1">
             <h1 className="text-xl font-semibold font-headline">
-              {navItems.find(item => pathname.startsWith(item.href))?.label}
+              {navItems.find(item => pathname.startsWith(item.href))?.label || 
+               (pathname.startsWith('/settings') && 'Settings') ||
+               (pathname.startsWith('/support') && 'Support')
+              }
             </h1>
           </div>
         </header>

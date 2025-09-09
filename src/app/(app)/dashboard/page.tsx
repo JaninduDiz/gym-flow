@@ -1,31 +1,39 @@
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { members, payments } from "@/lib/data";
 import { cn } from "@/lib/utils";
-import { differenceInDays, isThisWeek, isToday, parseISO } from "date-fns";
-import { ArrowUpRight, BarChart, Calendar, Users, Wallet } from "lucide-react";
-import Link from "next/link";
+import { differenceInDays, isThisWeek, isToday, parseISO, formatDistanceToNow } from "date-fns";
+import { Users, Wallet, BarChart, AlertTriangle, Clock } from "lucide-react";
 
-const StatCard = ({ title, value, icon: Icon, change, description }: { title: string, value: string, icon: React.ElementType, change?: string, description?: string }) => (
-    <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{title}</CardTitle>
-            <Icon className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-            <div className="text-2xl font-bold">{value}</div>
-            {change && <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <span className="text-primary">{change}</span>
-                {description}
-            </p>}
+const StatCard = ({ title, value, icon: Icon, className, iconClassName }: { title: string, value: string, icon: React.ElementType, className?: string, iconClassName?: string }) => (
+    <Card className={cn(className)}>
+        <CardContent className="p-4 flex items-center gap-4">
+            <Icon className={cn("h-8 w-8 text-muted-foreground", iconClassName)} />
+            <div className="flex flex-col">
+                 <p className="text-sm text-muted-foreground">{title}</p>
+                 <p className="text-2xl font-bold">{value}</p>
+            </div>
         </CardContent>
     </Card>
 );
 
 export default function DashboardPage() {
-    const upcomingPayments = payments.filter(p => p.status === 'due').sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).slice(0, 5);
+    const upcomingPayments = payments.filter(p => {
+        if (p.status !== 'due') return false;
+        const dueDate = parseISO(p.date);
+        const today = new Date();
+        const daysUntilDue = differenceInDays(dueDate, today);
+        return daysUntilDue >= 0 && daysUntilDue <= 7;
+    }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).slice(0, 5);
+
+    const overdueMembers = payments
+        .filter(p => p.status === 'overdue')
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 5);
+
     const upcomingBirthdays = members.filter(m => {
         const birthday = parseISO(m.birthday);
         const today = new Date();
@@ -35,20 +43,21 @@ export default function DashboardPage() {
 
     const totalRevenue = payments.filter(p => p.status === 'paid').reduce((acc, p) => acc + p.amount, 0);
     const overduePaymentsCount = payments.filter(p => p.status === 'overdue').length;
+    const dueSoonCount = upcomingPayments.length;
 
     return (
         <div className="grid gap-6">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <StatCard title="Total Members" value={String(members.length)} icon={Users} change="+2" description="this month" />
-                <StatCard title="Total Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} change="+15.2%" description="from last month" />
-                <StatCard title="Overdue Payments" value={String(overduePaymentsCount)} icon={BarChart} change="+5" description="since last week" />
-                <StatCard title="Upcoming Birthdays" value={String(upcomingBirthdays.length)} icon={Calendar} description="this week" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <StatCard title="Members" value={String(members.length)} icon={Users} />
+                <StatCard title="Overdue" value={String(overduePaymentsCount)} icon={AlertTriangle} className="bg-destructive/10 border-destructive/20" iconClassName="text-destructive" />
+                <StatCard title="Due Soon" value={String(dueSoonCount)} icon={Clock} className="bg-yellow-500/10 border-yellow-500/20" iconClassName="text-yellow-600" />
+                <StatCard title="30d Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} icon={Wallet} />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Upcoming Payments</CardTitle>
+                        <CardTitle>Due within 7 days</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Table>
@@ -63,13 +72,7 @@ export default function DashboardPage() {
                                 {upcomingPayments.map(payment => (
                                     <TableRow key={payment.id}>
                                         <TableCell>
-                                            <div className="flex items-center gap-3">
-                                                <Avatar className="h-8 w-8">
-                                                    <AvatarImage src={payment.memberAvatarUrl} alt={payment.memberName} data-ai-hint="member avatar" />
-                                                    <AvatarFallback>{payment.memberName.charAt(0)}</AvatarFallback>
-                                                </Avatar>
-                                                <span className="font-medium">{payment.memberName}</span>
-                                            </div>
+                                            <div className="font-medium">{payment.memberName}</div>
                                         </TableCell>
                                         <TableCell>${payment.amount.toFixed(2)}</TableCell>
                                         <TableCell className="text-right">{new Date(payment.date).toLocaleDateString()}</TableCell>
@@ -80,7 +83,36 @@ export default function DashboardPage() {
                     </CardContent>
                 </Card>
 
-                <Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Overdue Members</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Member</TableHead>
+                                    <TableHead>Amount</TableHead>
+                                    <TableHead className="text-right">Overdue Since</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {overdueMembers.map(payment => (
+                                    <TableRow key={payment.id}>
+                                        <TableCell>
+                                            <div className="font-medium">{payment.memberName}</div>
+                                        </TableCell>
+                                        <TableCell className="text-destructive">${payment.amount.toFixed(2)}</TableCell>
+                                        <TableCell className="text-right text-destructive">{formatDistanceToNow(parseISO(payment.date), { addSuffix: true })}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            </div>
+             <div className="grid gap-6 md:grid-cols-2">
+                 <Card>
                     <CardHeader>
                         <CardTitle>Upcoming Birthdays</CardTitle>
                     </CardHeader>
@@ -104,7 +136,7 @@ export default function DashboardPage() {
                         ))}
                     </CardContent>
                 </Card>
-            </div>
+             </div>
         </div>
     )
 }
