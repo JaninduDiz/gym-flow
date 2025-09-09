@@ -1,4 +1,5 @@
-import type { Metadata } from 'next';
+
+import type { Metadata, Viewport } from 'next';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
@@ -8,7 +9,24 @@ import { ThemeProvider } from '@/components/theme-provider';
 export const metadata: Metadata = {
   title: 'GymFlow',
   description: 'Manage your gym with ease.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: 'Gym Flow',
+  },
+  icons: {
+    shortcut: '/icons/favicon.ico',
+    apple: '/icons/apple-touch-icon.png',
+  }
 };
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#2A2D3A" },
+    { media: "(prefers-color-scheme: light)", color: "#EDF2F4" }
+   ]
+}
 
 export default function RootLayout({
   children,
