@@ -1,4 +1,5 @@
-import type { Metadata } from 'next';
+
+import type { Metadata, Viewport } from 'next';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
@@ -8,7 +9,15 @@ import { ThemeProvider } from '@/components/theme-provider';
 export const metadata: Metadata = {
   title: 'GymFlow',
   description: 'Manage your gym with ease.',
+  manifest: '/manifest.json'
 };
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#2a2d3a" },
+    { media: "(prefers-color-scheme: light)", color: "#EDF2F4" }
+   ]
+}
 
 export default function RootLayout({
   children,
