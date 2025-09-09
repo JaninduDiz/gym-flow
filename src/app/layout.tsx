@@ -9,12 +9,21 @@ import { ThemeProvider } from '@/components/theme-provider';
 export const metadata: Metadata = {
   title: 'GymFlow',
   description: 'Manage your gym with ease.',
-  manifest: '/manifest.json'
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: 'Gym Flow',
+  },
+  icons: {
+    shortcut: '/icons/favicon.ico',
+    apple: '/icons/apple-touch-icon.png',
+  }
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#2a2d3a" },
+    { media: "(prefers-color-scheme: dark)", color: "#2A2D3A" },
     { media: "(prefers-color-scheme: light)", color: "#EDF2F4" }
    ]
 }
