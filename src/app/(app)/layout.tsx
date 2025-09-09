@@ -20,15 +20,6 @@ import {
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuGroup,
-} from '@/components/ui/dropdown-menu';
 import { ProtectedRoute, useAuth } from '@/hooks/use-auth';
 import { Separator } from '@/components/ui/separator';
 
@@ -82,7 +73,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <SidebarMenu className="mb-2">
+          <SidebarMenu className="mb-[-2] sm:mb-[-8px]">
               <SidebarMenuItem>
                   <SidebarMenuButton asChild size="lg" tooltip="Settings" isActive={pathname === '/settings'} onClick={handleLinkClick}>
                       <Link href="/settings">
@@ -106,8 +97,8 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
                   </SidebarMenuButton>
               </SidebarMenuItem>
           </SidebarMenu>
-          <Separator className="my-2 bg-sidebar-border" />
-          <div className="flex items-center gap-4 cursor-pointer p-2 rounded-md">
+          <Separator className="bg-sidebar-border" />
+          <div className="flex items-center gap-4 cursor-pointer px-2 rounded-md sm:py-2">
               <Avatar className="h-10 w-10">
               <AvatarImage src="https://picsum.photos/100/100?random=10" alt="@manager" data-ai-hint="manager avatar" />
               <AvatarFallback>{user?.email?.[0].toUpperCase()}</AvatarFallback>
@@ -120,7 +111,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-14 items-center gap-4 border-b bg-card/80 backdrop-blur-sm px-6 sticky top-0 z-30 md:static md:h-auto md:border-0 md:bg-transparent md:px-0">
+        <header className="flex h-14 items-center gap-4 border-b bg-card/80 backdrop-blur-sm px-6 sticky top-0 z-30 md:static md:h-auto md:border-0 md:bg-transparent md:px-6 md:pt-6">
           <SidebarTrigger className="md:hidden" />
           <div className="flex-1">
             <h1 className="text-xl font-semibold font-headline">
